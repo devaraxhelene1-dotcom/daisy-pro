@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Daisy App — Ajout d'un créneau
 
-## Getting Started
+## Etude de cas et feature choisie
 
-First, run the development server:
+J'ai choisi l'étude de cas A "Conception d'une feature Daisy Pro" et la Feature B "Ajout d'un créneau",
+car elle la plus complète : une feature directement intégré sur la plateforme de daisy, un point d'entrée, un formulaire avec validation, un routing dynamique, et une confirmation.
 
+Le flux implémenté :
+1. L'artiste voit la liste de ses ateliers
+2. Il clique sur **+ CRÉNEAU** depuis la carte de l'atelier souhaité
+3. Il remplit le formulaire (date, heure, durée, capacité, prix) et clique sur **+ AJOUTER LE CRÉNEAU**
+4. Il reçoit une confirmation visuelle
+
+## Lancer le projet
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000) —> redirige automatiquement vers `/ateliers`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js 15 + TypeScript
+- TailwindCSS + shadcn/ui
+- Données mockées (JSON local)
+- Mobile-first
 
-## Learn More
+## Flux implémenté
+```
+/ateliers → liste des ateliers
+  -> clic sur + CRÉNEAU sur la carte souhaitée
+/ateliers/[id]/nouveau -> formulaire avec date/heure/durée/places/prix
+  -> clic sur + AJOUTER LE CRÉNEAU -> soumission
+écran de confirmation + RETOUR AUX ATELIERS -> retour sur la page /ateliers
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Découpage des composants
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Chaque composant a une responsabilité unique :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**`AtelierCard`** — affiche une carte atelier. Aucune logique, uniquement de l'affichage.
 
-## Deploy on Vercel
+**`CreneauForm`** — gère le formulaire et la validation. Quand la soumission réussit, il appelle `onSuccess`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**`SuccessScreen`** — affiche l'écran de confirmation.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**`ateliers/[id]/nouveau/page.tsx`** — assemble les composants et gère les états.
+
+
+## Routing dynamique
+
+Le bouton **+ CRÉNEAU** intègre l'id de l'atelier dans l'URL (`/ateliers/[id]/nouveau`). Le formulaire récupère cet id directement — pas besoin d'un select pour choisir l'atelier, ce qui évite une étape inutile et un risque d'erreur.
+
+
+## Les 4 états gérés
+
+| État | Déclencheur | Ce qui s'affiche |
+|---|---|---|
+| `empty` | Aucun atelier | Message et illustration |
+| `error` | Champ vide à la soumission | Message rouge, formulaire conservé |
+| `loading` | Soumission en cours | Bouton grisé, "Enregistrement..." |
+| `success` | Après 1,5s | Confirmation avec nom de l'atelier |
+
+
+## Arbitrages UI
+
+**Charte Daisy respectée** — Violet `#800080` pour les titres et éléments primaires, Corail `#F24E3E` pour les boutons d'action, Crème `#FCF8E8` pour le fond. Les couleurs sont centralisées dans `globals.css` pour faciliter la maintenance.
+
+**Champs groupés par paires** — Date + Heure ensemble, Durée + Places ensemble. Plus compact sur mobile et plus logique à lire.
+
+**Pas de sidebar** — sur mobile (360px), une sidebar n'a pas de sens. Un header simple avec les initiales de l'artiste suffit à simuler la connexion.

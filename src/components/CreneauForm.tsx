@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ateliers } from "@/data/ateliers"
 
 type Props = {
   atelierId: string
@@ -41,69 +40,53 @@ export default function CreneauForm({ atelierId, onSuccess }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
 
-      <div>
-        <Label className="mb-1 block text-sm font-medium">Atelier</Label>
-        <select
-          className="w-full bg-white border border-gray-200 rounded-lg p-2 text-sm"
-          onChange={(e) => handleChange("atelierId", e.target.value)}
-          defaultValue={atelierId}
-        >
-          {ateliers.map((a) => (
-            <option key={a.id} value={String(a.id)}>
-              {a.nom}
-            </option>
-          ))}
-        </select>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <Label className="mb-2 block text-sm font-medium">📅 Date</Label>
+          <Input
+            type="date"
+            className="bg-white rounded-xl text-sm"
+            onChange={(e) => handleChange("date", e.target.value)}/>
+        </div>
+
+        <div>
+          <Label className="mb-2 block text-sm font-medium">🕐 Heure</Label>
+          <Input
+            type="time"
+            className="bg-white rounded-xl text-sm"
+            onChange={(e) => handleChange("heure", e.target.value)}/>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <Label className="mb-2 block text-sm font-medium">⏱ Durée (min)</Label>
+          <Input
+            type="number"
+            placeholder="ex: 90"
+            className="bg-white rounded-xl text-sm"
+            onChange={(e) => handleChange("duree", e.target.value)}/>
+        </div>
+
+        <div>
+          <Label className="mb-2 block text-sm font-medium">👥 Places</Label>
+          <Input
+            type="number"
+            placeholder="ex: 8"
+            className="bg-white rounded-xl text-sm"
+            onChange={(e) => handleChange("capacite", e.target.value)}/>
+        </div>
       </div>
 
       <div>
-        <Label className="mb-1 block text-sm font-medium">Date</Label>
-        <Input
-          type="date"
-          className="bg-white"
-          onChange={(e) => handleChange("date", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label className="mb-1 block text-sm font-medium">Heure</Label>
-        <Input
-          type="time"
-          className="bg-white"
-          onChange={(e) => handleChange("heure", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label className="mb-1 block text-sm font-medium">Durée (minutes)</Label>
-        <Input
-          type="number"
-          placeholder="ex: 90"
-          className="bg-white"
-          onChange={(e) => handleChange("duree", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label className="mb-1 block text-sm font-medium">Capacité (places)</Label>
-        <Input
-          type="number"
-          placeholder="ex: 8"
-          className="bg-white"
-          onChange={(e) => handleChange("capacite", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label className="mb-1 block text-sm font-medium">Prix (€)</Label>
+        <Label className="mb-2 block text-sm font-medium">💶 Prix (€)</Label>
         <Input
           type="number"
           placeholder="ex: 35"
-          className="bg-white"
-          onChange={(e) => handleChange("prix", e.target.value)}
-        />
+          className="bg-white rounded-xl text-sm"
+          onChange={(e) => handleChange("prix", e.target.value)}/>
       </div>
 
       {error && (
@@ -116,9 +99,8 @@ export default function CreneauForm({ atelierId, onSuccess }: Props) {
         size="lg"
         onClick={handleSubmit}
         disabled={loading}
-        className="w-full text-white uppercase text-lg py-6"
-        style={{ backgroundColor: loading ? "#ccc" : "var(--accent)" }}
-      >
+        className="w-full text-white uppercase text-lg py-6 rounded-xl"
+        style={{ backgroundColor: loading ? "#ccc" : "var(--accent)" }}>
         {loading ? "Enregistrement..." : "+ Ajouter le créneau"}
       </Button>
 

@@ -20,8 +20,7 @@ export default function NouveauCreneau({ params }: { params: Promise<{ id: strin
     <main className="max-w-md mx-auto px-4 py-8">
       <button
         onClick={() => router.back()}
-        className="text-sm text-gray-400 mb-6 flex items-center gap-1"
-      >
+        className="text-sm text-gray-400 mb-6 flex items-center gap-1">
         ← Retour
       </button>
       <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--primary)" }}>

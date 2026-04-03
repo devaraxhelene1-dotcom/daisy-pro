@@ -20,8 +20,7 @@ export default function SuccessScreen({ nomAtelier }: Props) {
       <Button
         onClick={() => router.push("/")}
         className="w-full text-white uppercase text-lg py-6"
-        style={{ backgroundColor: "var(--primary)" }}
-      >
+        style={{ backgroundColor: "var(--primary)" }}>
         Retour aux ateliers
       </Button>
     </main>

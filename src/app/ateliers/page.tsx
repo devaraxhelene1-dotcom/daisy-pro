@@ -8,13 +8,20 @@ export default function AteliersPage() {
         Mes ateliers
       </h1>
 
-
-
-      <div className="flex flex-col gap-4 pt-6">
-        {ateliers.map((atelier) => (
-          <AtelierCard key={atelier.id} atelier={atelier} />
-        ))}
-      </div>
+      {ateliers.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="text-5xl mb-4">🎨</div>
+          <p className="text-gray-500 text-sm">
+            {"Tu n'as pas encore d'ateliers."}
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4 mt-6">
+          {ateliers.map((atelier) => (
+            <AtelierCard key={atelier.id} atelier={atelier} />
+          ))}
+        </div>
+      )}
     </main>
   )
 }
